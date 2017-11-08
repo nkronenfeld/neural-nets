@@ -1,0 +1,62 @@
+/**
+ */
+
+ group = 'ndk'
+ version = '0.0-SNAPSHOT'
+
+ project.ext {
+   scalaBinaryVersion = '2.11'
+   scalaVersion = '2.11.8'
+   scalatestVersion = '2.2.6'
+   packages = "org.scalatest:scalatest_${scalaBinaryVersion}:${scalatestVersion}"
+   artifactName = 'neural-nets'
+   description = 'Just some simple personal experimentation with neural nets.'
+   inceptionYear = '2017'
+   url = 'https://github.com/nkronenfeld/neural-nets'
+ }
+
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+  }
+  dependencies {
+    classpath "com.github.maiflai:gradle-scalatest:0.12"
+    classpath "org.github.ngbinh.scalastyle:gradle-scalastyle-plugin_2.10:0.8.2"
+  }
+}
+
+apply plugin: 'com.github.maiflai.scalatest'
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'scala'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+
+dependencies {
+    //scala
+    compile "org.scala-lang:scala-library:${scalaVersion}"
+
+    //scalatest
+    testCompile "org.scalatest:scalatest_${scalaBinaryVersion}:${scalatestVersion}"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.13'
+}
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+    }
+}
