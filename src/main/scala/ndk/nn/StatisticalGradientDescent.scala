@@ -7,7 +7,7 @@ import scala.util.Random
 import ndk.math.linalg.Vector
 
 
-
+// Taken from http://neuralnetworksanddeeplearning.com/
 object StatisticalGradiendDescent {
   def apply (data: Seq[(Vector, Vector)], epochs: Int, batches: Int, mu: Double): Unit = {
     val r = new Random()

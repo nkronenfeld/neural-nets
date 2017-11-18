@@ -1,5 +1,9 @@
 package ndk.math.linalg
 
+import ndk.math.Gaussian
+
+import scala.util.Random
+
 class Vector (val values: Array[Double]) {
   val length = values.length;
 
@@ -35,6 +39,10 @@ class Vector (val values: Array[Double]) {
     new Vector(this.values.map(_ * that))
   }
 
+  def map (fcn: Double => Double): Vector = {
+    new Vector(this.values.map(fcn))
+  }
+
   override def equals (other: Any): Boolean = other match {
     case that: Vector => Vector.vectorsEqual(1E-12)(this, that)
     case _ => false
@@ -47,5 +55,9 @@ object Vector {
     val c = a - b
 
     (c dot c) < (tolerance * tolerance)
+  }
+
+  def random (length: Int, random: Random = new Random()): Vector = {
+    new Vector(Array.fill(length)(Gaussian.random(random)))
   }
 }

@@ -14,5 +14,11 @@ class MatrixTests extends FunSpec {
       val B = Matrix.fromArrays(Array(2.0, -1.0), Array(-1.0, 1.0))
       assert(A * B === Matrix.fromArrays(Array(0.0, 1.0), Array(5.0, -1.0)))
     }
+    it("should multiply by a vector properly") {
+      val m = Matrix.fromVectors(Vector(-1.0, 1.0), Vector(1.0, -1.0), Vector(-1.0, 1.0))
+      val v1 = Vector(1.0, 1.0, 1.0)
+      val v2 = m * v1
+      assert(Vector(-1.0, 1.0) ===  v2)
+    }
   }
 }

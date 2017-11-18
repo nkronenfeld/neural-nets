@@ -1,5 +1,9 @@
 package ndk.math.linalg
 
+import ndk.math.Gaussian
+
+import scala.util.Random
+
 // A matrix, a listing of C columns of length R (i.e., column-major order
 class Matrix (val C: Int, val R: Int, val values: Array[Double]) {
   assert(R * C == values.length)
@@ -36,6 +40,8 @@ class Matrix (val C: Int, val R: Int, val values: Array[Double]) {
         (0 until (C * R)).map(n => this.values(n) == that.values(n)).reduce(_ && _)
     case _ => false
   }
+
+  override def toString: String = s"Matrix[C=${C} x R=${R}]"
 }
 object Matrix {
   def fromArrays (columns: Array[Double]*): Matrix = {
@@ -51,5 +57,8 @@ object Matrix {
     columns.foreach(c => assert(c.length == R))
 
     new Matrix(C, R, columns.map(_.values).reduce(_ ++ _))
+  }
+  def random (c: Int, r: Int, random: Random = new Random()): Matrix = {
+    new Matrix(c, r, Array.fill(c*r)(Gaussian.random(random)))
   }
 }

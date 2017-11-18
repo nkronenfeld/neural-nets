@@ -8,8 +8,7 @@ import scala.util.Random
 
 
 object Gaussian {
-  private val r = new Random
-  def random: Double = {
-    math.sqrt(-2 * math.log(r.nextDouble())) * math.cos(2 * math.Pi * r.nextDouble())
+  def random (random: Random = new Random): Double = {
+    math.sqrt(-2 * math.log(random.nextDouble())) * math.cos(2 * math.Pi * random.nextDouble())
   }
 }
