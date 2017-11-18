@@ -1,25 +1,9 @@
-package software.uncharted.focalpoint.networksources.names
+package ndk.nn
 
 import org.scalactic.TolerantNumerics
 import org.scalatest.FunSpec
 
 
-class SigmoidTests extends FunSpec {
-  private val epsilon = 1E-12
-  implicit val doubleEquality = TolerantNumerics.tolerantDoubleEquality(epsilon)
-
-  describe("Sigmoid") {
-    it("should be 0 at large negative numbers") {
-      assert(Sigmoid(-100.0) === 0.0)
-    }
-    it("should be 1/2 at 0") {
-      assert(Sigmoid(0.0) === 0.5)
-    }
-    it("should be 1 at large positive numbers") {
-      assert(Sigmoid(100.0) === 1.0)
-    }
-  }
-}
 
 class NameRecognizerTests extends FunSpec {
   describe("Fixed-length sequences") {
@@ -48,21 +32,6 @@ class NameRecognizerTests extends FunSpec {
         assert(63 === NameRecognizer.stringToFeatures(3)("ronald wilson reagan").values.length)
         assert(63 === NameRecognizer.stringToFeatures(3)("the quick brown fox jumps over the lazy dog").values.length)
       }
-    }
-  }
-}
-
-class MatrixTests extends FunSpec {
-  describe("Multiplication") {
-    it("should multiply a vector properly") {
-      val A = FeatureMatrix(Array(1.0, 4.0, 2.0), Array(-3.0, 5.0, -4.0))
-      val V = FeatureVector(7, 9)
-      assert(A * V === FeatureVector(-20, 73, -22))
-    }
-    it("should multiply two matrices properly") {
-      val A = FeatureMatrix(Array(1.0, 4.0), Array(2.0, 3.0))
-      val B = FeatureMatrix(Array(2.0, -1.0), Array(-1.0, 1.0))
-      assert(A * B === FeatureMatrix(Array(0.0, 1.0), Array(5.0, -1.0)))
     }
   }
 }

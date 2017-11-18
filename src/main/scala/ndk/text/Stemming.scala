@@ -1,3 +1,7 @@
+package ndk.text
+
+
+
 // Porter stemming algorithm
 // Root source: https://tartarus.org/martin/PorterStemmer/
 // Scala code source: https://tartarus.org/martin/PorterStemmer/scala.txt
@@ -194,7 +198,7 @@ class Stemmer
   // checker is the conditional checker for m.
   def processSubList( l:List[(String, String)], checker: Int=>Boolean ): Boolean =
   {
-    var iter = l.elements
+    var iter = l.iterator
     var done = false
 
     while (!done && iter.hasNext )
