@@ -20,6 +20,15 @@ class Vector (val values: Array[Double]) {
     new Vector((this.values zip that.values).map { case (a, b) => a + b })
   }
 
+  // Add the given vector to this one changing this one
+  def addInPlace (that: Vector): Vector = {
+    assert(this.values.length == that.values.length)
+    for (i <- this.values.indices) {
+      this.values(i) = this.values(i) + that.values(i)
+    }
+    this
+  }
+
   def -(that: Vector): Vector = {
     assert(this.values.length == that.values.length)
     new Vector((this.values zip that.values).map { case (a, b) => a - b })
@@ -39,6 +48,11 @@ class Vector (val values: Array[Double]) {
     new Vector(this.values.map(_ * that))
   }
 
+  def multiplyInPlace (that: Double): Vector = {
+    for (i <- values.indices) values(i) = values(i) * that
+    this
+  }
+
   def map (fcn: Double => Double): Vector = {
     new Vector(this.values.map(fcn))
   }
@@ -49,6 +63,7 @@ class Vector (val values: Array[Double]) {
   }
   override def toString: String = values.mkString("[", ", ", "]")
 }
+
 object Vector {
   def apply (values: Double*): Vector = new Vector(values.toArray)
   def vectorsEqual (tolerance: Double)(a: Vector, b: Vector): Boolean = {
@@ -59,5 +74,9 @@ object Vector {
 
   def random (length: Int, random: Random = new Random()): Vector = {
     new Vector(Array.fill(length)(Gaussian.random(random)))
+  }
+
+  def zero (length: Int): Vector = {
+    new Vector(Array.fill(length)(0.0))
   }
 }

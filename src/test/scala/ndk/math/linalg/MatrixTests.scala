@@ -21,4 +21,13 @@ class MatrixTests extends FunSpec {
       assert(Vector(-1.0, 1.0) ===  v2)
     }
   }
+  describe("Transpose") {
+    it("should transpose a matrix properly") {
+      val a = Matrix.fromVectors(Vector(1.0, 2.0), Vector(3.0, 4.0), Vector(5.0, 6.0))
+      val b = Matrix.fromVectors(Vector(1.0, 3.0, 5.0), Vector(2.0, 4.0, 6.0))
+
+      assert(a === b.transpose())
+      assert(b === a.transpose())
+    }
+  }
 }

@@ -19,6 +19,23 @@ class Matrix (val C: Int, val R: Int, val values: Array[Double]) {
     values(c * R + r) = v
   }
 
+  def + (that: Matrix): Matrix = {
+    assert(this.C == that.C)
+    assert(this.R == that.R)
+    new Matrix(C, R,
+      (this.values zip that.values).map { case (a, b) => a + b })
+  }
+
+  // Add the given matrix to this one, changing this one
+  def addInPlace (that: Matrix): Matrix = {
+    assert(this.C == that.C)
+    assert(this.R == that.R)
+    for (i <- 0 until C * R) {
+      this.values(i) = this.values(i) + that.values(i)
+    }
+    this
+  }
+
   def * (that: Matrix): Matrix = {
     assert(this.C == that.R)
     new Matrix(that.C, this.R,
@@ -26,11 +43,27 @@ class Matrix (val C: Int, val R: Int, val values: Array[Double]) {
         (0 until this.C).map(n => this(n, r) * that(c, n)).sum
       }).toArray)
   }
+
   def * (that: Vector): Vector = {
     assert(this.C == that.length)
     new Vector((for (r <- 0 until this.R) yield {
       (0 until this.C).map(n => this(n, r) * that(n)).sum
     }).toArray)
+  }
+
+  def * (that: Double): Matrix = {
+    new Matrix(C, R, values.map(_ * that))
+  }
+
+  def multiplyInPlace (that: Double): Matrix = {
+    for (i <- values.indices) values(i) = values(i) * that
+    this
+  }
+
+  def transpose (): Matrix = {
+    new Matrix(R, C,
+      values.sliding(R, R).toArray.transpose.reduce(_ ++ _)
+    )
   }
 
   override def equals (other: Any): Boolean = other match {
@@ -43,6 +76,7 @@ class Matrix (val C: Int, val R: Int, val values: Array[Double]) {
 
   override def toString: String = s"Matrix[C=${C} x R=${R}]"
 }
+
 object Matrix {
   def fromArrays (columns: Array[Double]*): Matrix = {
     val C = columns.length
@@ -58,7 +92,12 @@ object Matrix {
 
     new Matrix(C, R, columns.map(_.values).reduce(_ ++ _))
   }
+
   def random (c: Int, r: Int, random: Random = new Random()): Matrix = {
-    new Matrix(c, r, Array.fill(c*r)(Gaussian.random(random)))
+    new Matrix(c, r, Array.fill(c * r)(Gaussian.random(random)))
+  }
+
+  def zero (c: Int, r: Int): Matrix = {
+    new Matrix(c, r, Array.fill(c * r)(0.0))
   }
 }
