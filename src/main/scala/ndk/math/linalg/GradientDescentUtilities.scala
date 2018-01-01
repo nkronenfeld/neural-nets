@@ -49,7 +49,57 @@ object GradientDescentUtilities {
   }
 
 
+  /**
+    * Add an initial ones column to a matrix
+    *
+    * This is used with data matrices to add in intercept column to established data
+    *
+    * @param M The matrix to alter
+    * @return A new matrix with an initial column of all 1's, but otherwise identical to M
+    */
   def addOnesColumn (M: Matrix): Matrix = {
     new Matrix(M.C+1, M.R, Array.fill(M.R)(1.0) ++ M.values)
+  }
+
+
+  /**
+    * Generic convergence function
+    *
+    * @param initialConvergenceValue The initial convergence value on which we are trying to improve
+    * @param requiredConvergenceValue The required value of the convergence calculation for acceptable
+    *                                 convergence
+    * @param initialAlpha The initial convergence parameter, input into the function
+    * @param initialValue The initial data value
+    * @param fcn A function, taking the convergence parameter (alpha) and the value being analyzed,
+    *            and outputting the convergence calculation and the new value
+    * @tparam T The type of value being analyzed
+    * @return The best value of type T found by convergence using the given function
+    */
+  def converge[T] (initialConvergenceValue: Double,
+                   requiredConvergenceValue: Double,
+                   initialAlpha: Double,
+                   initialValue: T,
+                   fcn: (Double, T) => (Double, T)): T  = {
+    var c = initialConvergenceValue
+    assert(c > 0.0)
+
+    var alpha = initialAlpha
+    var v = initialValue
+    while (c > requiredConvergenceValue) {
+      val (newC, newV) = fcn(alpha, v)
+      assert(newC > 0.0)
+
+      if (newC < c) {
+        if (newC / c > 0.9) {
+          alpha = alpha * 2.0
+        }
+        c = newC
+        v = newV
+      } else {
+        alpha = alpha / 2.0
+      }
+    }
+
+    v
   }
 }
