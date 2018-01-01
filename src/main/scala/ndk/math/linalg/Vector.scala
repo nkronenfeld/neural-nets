@@ -15,6 +15,9 @@ class Vector (val values: Array[Double]) {
     values(n) = v
   }
 
+  def toRowMatrix: Matrix = new Matrix(length, 1, values)
+  def toColumnMatrix: Matrix = new Matrix(1, length, values)
+
   def +(that: Vector): Vector = {
     assert(this.values.length == that.values.length)
     new Vector((this.values zip that.values).map { case (a, b) => a + b })
@@ -37,6 +40,14 @@ class Vector (val values: Array[Double]) {
   def * (that: Vector): Vector = {
     assert(this.values.length == that.values.length)
     new Vector((this.values zip that.values).map { case (a, b) => a * b })
+  }
+
+  def / (that: Vector): Vector = {
+    assert(this.values.length == that.values.length)
+    new Vector((this.values zip that.values).map { case (a, b) =>
+        assert(b != 0.0)
+        a / b
+    })
   }
 
   def dot (that: Vector): Double = {
